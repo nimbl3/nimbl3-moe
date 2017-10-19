@@ -1,0 +1,1 @@
+{"output":"src/main/java","platform":"iOS","bindings":[{"type":"header","name":"MessageListViewController","objcClassGenerationMode":"Binding","headerPath":"xcode/ios-app","headerSearchPaths":[],"userHeaderSearchPaths":[],"frameworkSearchPaths":[],"packageBase":"chat.nimbl3","importCode":"#import \"MessageListViewController.h\""}]}

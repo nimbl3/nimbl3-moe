@@ -5,11 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="chatcross.nimbl3.com.ui.MainActivity">
-
-    <ListView
-        android:id="@+id/lv_repositories"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    tools:context="chatcross.nimbl3.com.ui.ChatActivity">
 
 </android.support.constraint.ConstraintLayout>

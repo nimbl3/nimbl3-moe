@@ -15,7 +15,6 @@ class ChatActivity : BaseActivity(R.layout.activity_chat) {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTitle("Chat")

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import chat.common.nimbl3.com.model.Message
 import chat.common.nimbl3.com.presenter.MessagesPresenter
-import chat.common.nimbl3.com.view.IMessageView
+import chat.common.nimbl3.com.iview.IMessageView
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
@@ -27,12 +27,11 @@ class MainActivity : AppCompatActivity(), IMessageView {
         repoPresenter.getMessages(AndroidSchedulers.mainThread(), Schedulers.newThread())
     }
 
-    override fun showMessages(allRepositories: MutableList<Message>) {
+    override fun showMessages(allMessages: List<Message>) {
         var messages = ""
-        for (message: Message in allRepositories) {
+        for (message: Message in allMessages) {
             messages += message.name + "\n"
         }
         textView.text = messages
     }
-
 }

@@ -17,7 +17,7 @@ import apple.uikit.protocol.UITableViewDataSource;
 import apple.uikit.protocol.UITableViewDelegate;
 import chat.common.nimbl3.com.model.Message;
 import chat.common.nimbl3.com.presenter.MessagesPresenter;
-import chat.common.nimbl3.com.view.IMessageView;
+import chat.common.nimbl3.com.iview.IMessageView;
 import chat.nimbl3.schedulers.IOSSchedulers;
 
 import org.moe.natj.c.ann.FunctionPtr;
@@ -205,7 +205,7 @@ public class MessageListViewController extends UIViewController implements IMess
     @Override
     public UITableViewCell tableViewCellForRowAtIndexPath(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = (UITableViewCell) tableView.dequeueReusableCellWithIdentifierForIndexPath(CELL_IDENTIFIER, indexPath);
-        cell.textLabel().setText(mAllMessages.get((int) indexPath.row()).name);
+        cell.textLabel().setText(mAllMessages.get((int) indexPath.row()).getName());
     return cell;
     }
 

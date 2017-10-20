@@ -17,7 +17,7 @@ import apple.uikit.protocol.UITableViewDataSource;
 import apple.uikit.protocol.UITableViewDelegate;
 import chat.common.nimbl3.com.model.Message;
 import chat.common.nimbl3.com.presenter.MessagesPresenter;
-import chat.common.nimbl3.com.iview.IMessageView;
+import chat.common.nimbl3.com.callbacks.IMessageCallback;
 import chat.nimbl3.schedulers.IOSSchedulers;
 
 import org.moe.natj.c.ann.FunctionPtr;
@@ -46,7 +46,8 @@ import java.util.List;
 @Runtime(ObjCRuntime.class)
 @ObjCClassName("MessageListViewController")
 @RegisterOnStartup
-public class MessageListViewController extends UIViewController implements IMessageView, UITableViewDataSource, UITableViewDelegate {
+public class MessageListViewController extends UIViewController
+        implements IMessageCallback, UITableViewDataSource, UITableViewDelegate {
     private final NSOperationQueue operationQueue;
 	static {
 		NatJ.register();

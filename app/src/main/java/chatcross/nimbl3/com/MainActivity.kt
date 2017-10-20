@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.widget.TextView
 import chat.common.nimbl3.com.model.Message
 import chat.common.nimbl3.com.presenter.MessagesPresenter
-import chat.common.nimbl3.com.iview.IMessageView
+import chat.common.nimbl3.com.callbacks.IMessageCallback
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 
-class MainActivity : AppCompatActivity(), IMessageView {
+class MainActivity : AppCompatActivity(), IMessageCallback {
 
     lateinit var textView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,5 +33,9 @@ class MainActivity : AppCompatActivity(), IMessageView {
             messages += message.name + "\n"
         }
         textView.text = messages
+    }
+
+    override fun onError(error: Throwable) {
+        // Handle error
     }
 }

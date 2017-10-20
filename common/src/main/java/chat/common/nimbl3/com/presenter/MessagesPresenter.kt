@@ -2,11 +2,11 @@ package chat.common.nimbl3.com.presenter
 
 import chat.common.nimbl3.com.model.Message
 import chat.common.nimbl3.com.service.Api
-import chat.common.nimbl3.com.iview.IMessageView
+import chat.common.nimbl3.com.callbacks.IMessageCallback
 import rx.Scheduler
 import rx.Subscriber
 
-class MessagesPresenter(internal var mView: IMessageView) {
+class MessagesPresenter(internal var mCallback: IMessageCallback) {
 
     fun getMessages(postThread: Scheduler, subscribeThread: Scheduler) {
         Api.service.repos
@@ -17,8 +17,8 @@ class MessagesPresenter(internal var mView: IMessageView) {
 
                     override fun onError(e: Throwable) {}
 
-                    override fun onNext(repositories: List<Message>) {
-                        mView.showMessages(repositories)
+                    override fun onNext(messages: List<Message>) {
+                        mCallback.showMessages(messages)
                     }
                 })
     }

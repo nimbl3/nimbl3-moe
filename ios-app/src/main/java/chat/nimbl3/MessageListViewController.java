@@ -15,10 +15,9 @@ import apple.uikit.UITableViewCell;
 import apple.uikit.UIViewController;
 import apple.uikit.protocol.UITableViewDataSource;
 import apple.uikit.protocol.UITableViewDelegate;
-import chat.common.nimbl3.com.model.Message;
-import chat.common.nimbl3.com.presenter.MessagesPresenter;
-import chat.common.nimbl3.com.callbacks.IMessageCallback;
-import chat.nimbl3.schedulers.IOSSchedulers;
+import chat.common.nimbl3.com.callbacks.IRepositoryCallback;
+import chat.nimbl3.presenter.RepositoryPresenter;
+import chat.nimbl3.view.BaseView;
 
 import org.moe.natj.c.ann.FunctionPtr;
 import org.moe.natj.general.NatJ;
@@ -39,16 +38,15 @@ import org.moe.natj.objc.ann.ObjCClassName;
 import org.moe.natj.objc.ann.Selector;
 import org.moe.natj.objc.map.ObjCObjectMapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Generated
 @Runtime(ObjCRuntime.class)
 @ObjCClassName("MessageListViewController")
 @RegisterOnStartup
 public class MessageListViewController extends UIViewController
-        implements IMessageCallback, UITableViewDataSource, UITableViewDelegate {
+        implements BaseView, UITableViewDataSource, UITableViewDelegate {
     private final NSOperationQueue operationQueue;
+    private IRepositoryCallback messagesCallback;
+
 	static {
 		NatJ.register();
 	}
@@ -206,27 +204,19 @@ public class MessageListViewController extends UIViewController
     @Override
     public UITableViewCell tableViewCellForRowAtIndexPath(UITableView tableView, NSIndexPath indexPath) {
         UITableViewCell cell = (UITableViewCell) tableView.dequeueReusableCellWithIdentifierForIndexPath(CELL_IDENTIFIER, indexPath);
-        cell.textLabel().setText(mAllMessages.get((int) indexPath.row()).getName());
+        cell.textLabel().setText(((RepositoryPresenter) messagesCallback).getListMessagess().get((int) indexPath.row()).getName());
     return cell;
     }
 
     @Override
     public long tableViewNumberOfRowsInSection(UITableView tableView, long section) {
-        return mAllMessages.size();
+        return ((RepositoryPresenter) messagesCallback).getListMessagess().size();
     }
 
-    private List<Message> mAllMessages = new ArrayList<>();
-
-    @Override
-    public void showMessages(List<Message> allMessages) {
-        this.mAllMessages = allMessages;
-        messageTableView().reloadData();
-    }
 
     @Override
     public void viewDidLoad() {
         super.viewDidLoad();
-        MessagesPresenter presenter = new MessagesPresenter(this);
-        presenter.getMessages(IOSSchedulers.mainThread(), IOSSchedulers.handlerThread(operationQueue));
+        messagesCallback = new RepositoryPresenter(this, messageTableView(), operationQueue);
     }
 }

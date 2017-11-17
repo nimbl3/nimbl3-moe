@@ -1,5 +1,6 @@
 package chat.common.nimbl3.com.callbacks
 
+import chat.common.nimbl3.com.model.QueryResponse
 import chat.common.nimbl3.com.model.Repository
 
 /**
@@ -7,6 +8,6 @@ import chat.common.nimbl3.com.model.Repository
  */
 
 interface IRepositoryCallback {
-    fun showRepositories(repository: List<Repository>)
+    fun showResult(response: QueryResponse?)
     fun onError(error: Throwable)
 }

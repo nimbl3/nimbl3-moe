@@ -1,55 +1,73 @@
 package chatcross.nimbl3.com.ui
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.ActionBar
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
-import chat.common.nimbl3.com.model.Repository
-import chat.common.nimbl3.com.repo.RepoRepository
+import android.widget.*
+import chat.common.nimbl3.com.repo.ApiRepository
 import chat.common.nimbl3.com.callbacks.IRepositoryCallback
+import chat.common.nimbl3.com.model.DataForm
+import chat.common.nimbl3.com.model.QueryResponse
 import chatcross.nimbl3.com.R
-import chatcross.nimbl3.com.ui.ChatActivity
 import chatcross.nimbl3.com.ui.base.BaseActivity
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
-
 class MainActivity : BaseActivity(R.layout.activity_main), IRepositoryCallback {
     lateinit var lvRepositories: ListView
+    lateinit var tvInput: EditText
+    lateinit var btSubmit: Button
+
+    lateinit var repoPresenter: ApiRepository
+    lateinit var adapter: ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTitle("Repositories")
+        setTitle("Chat")
         initViews()
+
         if (savedInstanceState == null) {
+            repoPresenter = ApiRepository(this)
             load()
         }
     }
 
     fun initViews() {
+        tvInput = findViewById<EditText>(R.id.input_text)
         lvRepositories = findViewById<ListView>(R.id.lv_repositories)
+        lvRepositories.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+        lvRepositories.setStackFromBottom(true);
+        btSubmit = findViewById<Button>(R.id.submit)
+        btSubmit.setOnClickListener { view -> requestMessage(tvInput.text.toString()) }
+    }
 
-        enableActionBarRightButton("Next", View.OnClickListener { v -> ChatActivity.show(this) })
+    fun requestMessage(input: String) {
+        val contexts: MutableList<String> = mutableListOf(input)
+        repoPresenter.getMessages(AndroidSchedulers.mainThread(), Schedulers.newThread(), DataForm(contexts, input))
+        append(input)
+        tvInput.setText("")
     }
 
     fun load() {
-        val repoPresenter = RepoRepository(this)
-        repoPresenter.getMessages(AndroidSchedulers.mainThread(), Schedulers.newThread())
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1)
     }
 
-    override fun showRepositories(allRepositories: List<Repository>) {
-        var adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1)
-        for (repository: Repository in allRepositories) {
-            adapter.add(repository.name)
+    override fun showResult(response: QueryResponse?) {
+        try {
+            if (response?.result?.speech.isNullOrEmpty()) return;
+            append(response?.result?.speech!!)
+        }catch (ex: Exception) {
+            Toast.makeText(this, "error", Toast.LENGTH_SHORT)
         }
+    }
+
+    fun append(message: String) {
+        adapter.add(message)
         lvRepositories.adapter = adapter
-        lvRepositories.deferNotifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun onError(error: Throwable) {
-        // Handle error
+        Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
     }
 }

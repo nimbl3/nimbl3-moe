@@ -2,6 +2,6 @@
 <resources>
     <color name="colorPrimary">@android:color/white</color>
     <color name="colorPrimaryDark">@android:color/black</color>
-    <color name="colorAccent">#a7aaaf</color>
-    <color name="light_blue_text_button">#4286f4</color>
+    <color name="colorAccent">#4286f4</color>
+    <color name="submit_button">#4D41d6f4</color>
 </resources>

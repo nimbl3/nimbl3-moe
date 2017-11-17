@@ -22,7 +22,7 @@
         android:clickable="true"
         android:layout_gravity="end|right"
         android:gravity="center"
-        android:textColor="@color/light_blue_text_button"
+        android:textColor="@color/submit_button"
         android:textSize="18sp"
         android:text="Next"/>
 </FrameLayout>

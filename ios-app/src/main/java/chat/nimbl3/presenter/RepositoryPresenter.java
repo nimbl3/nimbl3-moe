@@ -9,7 +9,7 @@ import apple.foundation.NSOperationQueue;
 import apple.uikit.UITableView;
 import chat.common.nimbl3.com.callbacks.IRepositoryCallback;
 import chat.common.nimbl3.com.model.Repository;
-import chat.common.nimbl3.com.repo.RepoRepository;
+import chat.common.nimbl3.com.repo.ApiRepository;
 import chat.nimbl3.schedulers.IOSSchedulers;
 import chat.nimbl3.view.BaseView;
 
@@ -26,7 +26,7 @@ public class RepositoryPresenter implements IRepositoryCallback {
     public RepositoryPresenter(BaseView baseView, UITableView component, NSOperationQueue operationQueue) {
         this.mView = baseView;
         this.mViewComponent = component;
-        RepoRepository repository = new RepoRepository(this);
+        ApiRepository repository = new ApiRepository(this);
         repository.getMessages(IOSSchedulers.mainThread(), IOSSchedulers.handlerThread(operationQueue));
     }
 
@@ -36,7 +36,7 @@ public class RepositoryPresenter implements IRepositoryCallback {
     }
 
     @Override
-    public void showRepositories(@NotNull List<Repository> allRepositories) {
+    public void showResult(@NotNull List<Repository> allRepositories) {
         this.mAllRepositories = allRepositories;
         mViewComponent.reloadData();
     }
